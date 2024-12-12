@@ -1,45 +1,32 @@
 <?php
-session_start();
+session_start(); // Start the session
 
-// Include the database connection file
-include('connection.php');
 
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    echo "<script>
-            alert('You must be logged in to send feedback!');
-            window.location.href = 'login.php'; // Redirect to login page
-          </script>";
-    exit();
-}
+// Process the feedback submission
+include('connection.php'); // Include database connection
 
-// Handle the form submission
+// Get and sanitize user input
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get logged-in user details from session
-    $user_id = $_SESSION['user_id'];
-    $full_name = $_SESSION['full_name'];
-    $email = $_SESSION['email'];
+$full_name = $conn->real_escape_string(trim($_POST['full_name']));
+$email = $conn->real_escape_string(trim($_POST['email']));
+$message = $conn->real_escape_string(trim($_POST['message']));
 
-    // Get the message from the form and sanitize input
-    $message = $conn->real_escape_string(trim($_POST['message']));
+// Insert feedback into the database
+$sql = "INSERT INTO feedback (full_name, email, message, user_id) 
+        VALUES ('$full_name', '$email', '$message', '{$_SESSION['user_id']}')";
 
-    // Insert data into the feedback table
-    $sql = "INSERT INTO feedback (user_id, full_name, email, message) 
-            VALUES ('$user_id', '$full_name', '$email', '$message')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>
-                alert('Thank you for your feedback!');
-                window.location.href = 'index.php'; // Redirect to the homepage
-              </script>";
-    } else {
-        echo "<script>
-                alert('Error: Unable to submit your feedback.');
-                window.location.href = 'index.php'; // Redirect back to homepage
-              </script>";
-    }
-
-    // Close the database connection
-    $conn->close();
+if ($conn->query($sql) === TRUE) {
+    echo "<script>
+            alert('Thank you for your feedback!');
+            window.location.href = 'index.php'; // Redirect to the dashboard
+          </script>";
+} else {
+    echo "<script>
+            alert('Error: Unable to submit your feedback.');
+            window.location.href = 'index.php'; // Redirect to the dashboard
+          </script>";
 }
-?>
+
+// Close the database connection
+$conn->close();
+}

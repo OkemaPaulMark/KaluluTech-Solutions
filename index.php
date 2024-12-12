@@ -154,16 +154,18 @@ session_start();
     <div class="container pt-5">
       <div class="row">
         <div class="col-md-8 col-lg-6">
-          <h2>Welcome to our website</h2>
+        <h2>Welcome to our website, <?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'as Guest'; ?>!</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum doloribus, numquam aut vero maiores tempore ratione consequuntur ullam consequatur fugit cupiditate aspernatur eius odit sapiente dolores corporis, nostrum sequi iusto.</p>
           <!-- <button class="btn btn-dark">Request a call Back</button> -->
 
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+          <?php include("modal.php");?>
+          <!-- <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Request a call Back
           </button>
 
-          <!-- Modal -->
+         
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -203,7 +205,7 @@ session_start();
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -463,7 +465,9 @@ session_start();
       <h4 style="text-align: center;" class="py-3">Contact Us</h4>
       <div class="row py-0">
         <!-- Contact Form -->
-        <div class="col-sm-12 col-md-6 col-lg-6 mb-4">
+
+        <?php include("feedbackform.php"); ?>
+        <!-- <div class="col-sm-12 col-md-6 col-lg-6 mb-4">
           <h5>Enter your Feedback here</h5>
           <form action="feedback.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
             <div class="row gy-4 py-0">
@@ -473,16 +477,14 @@ session_start();
               <div class="col-12">
                 <input type="email" class="form-control" name="email" placeholder="Email address" required>
               </div>
-              <!-- <div class="col-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-                </div> -->
+              
               <div class="col-12 pb-3">
                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
               </div>
             </div>
             <button class="btn btn-success mb-3">Submit</button>
           </form>
-        </div>
+        </div> -->
 
         <!-- Links Section -->
         <div class="col-sm-12 col-md-6 col-lg-6">
